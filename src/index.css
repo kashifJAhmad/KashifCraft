@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #1a1a2e;
+  font-family: 'Press Start 2P', monospace;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #2a2a3e;
+}
+::-webkit-scrollbar-thumb {
+  background: #5da832;
+  border-radius: 4px;
+}
+
+.mc-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  background: #737373;
+  border: 3px solid;
+  border-color: #aaa #555 #555 #aaa;
+  padding: 8px 16px;
+  color: white;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 #333;
+  image-rendering: pixelated;
+}
+.mc-btn:hover {
+  background: #8b8b8b;
+  border-color: #ccc #666 #666 #ccc;
+}
+.mc-btn:active {
+  background: #555;
+  border-color: #555 #aaa #aaa #555;
+}
+
+.mc-panel {
+  background: #c6c6c6;
+  border: 3px solid;
+  border-color: #fff #555 #555 #fff;
+  box-shadow: inset 0 0 0 1px #999;
+}
+
+.mc-panel-dark {
+  background: #2d2d2d;
+  border: 3px solid;
+  border-color: #555 #1a1a1a #1a1a1a #555;
+  color: white;
+}
+
+.mc-slot {
+  background: #8b8b8b;
+  border: 2px solid;
+  border-color: #555 #c6c6c6 #c6c6c6 #555;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.mc-slot:hover {
+  transform: scale(1.1);
+}
+.mc-slot.selected {
+  border-color: #fff #888 #888 #fff;
+  box-shadow: 0 0 8px rgba(93, 168, 50, 0.6);
+}
+
+:where(a, button, [role='button']):focus-visible {
+  outline: 3px solid #ffe44d;
+  outline-offset: 3px;
+}
+
+.portfolio-scroll {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.section-motion-door,
+.section-motion-mining,
+.section-motion-build,
+.section-motion-treasure,
+.section-motion-book,
+.section-motion-gate,
+.section-motion-goals {
+  display: inline-block;
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.section-motion-door { animation-name: doorOpen; transform-origin: left center; }
+.section-motion-mining { animation-name: miningStrike; }
+.section-motion-build { animation-name: blocksAssemble; }
+.section-motion-treasure { animation-name: treasureReveal; }
+.section-motion-book { animation-name: bookOpen; transform-origin: bottom center; }
+.section-motion-gate { animation-name: gateOpen; transform-origin: center; }
+.section-motion-goals { animation-name: goalsReveal; }
+
+@keyframes doorOpen {
+  from { transform: perspective(120px) rotateY(-70deg) scale(0.85); opacity: 0.3; }
+  to { transform: perspective(120px) rotateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes miningStrike {
+  0% { transform: rotate(0) translateY(-8px); }
+  45% { transform: rotate(-25deg) translateY(3px); }
+  70% { transform: rotate(12deg) translateY(-2px); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes blocksAssemble {
+  from { transform: translateY(12px) scale(0.65); opacity: 0; filter: brightness(1.8); }
+  to { transform: translateY(0) scale(1); opacity: 1; filter: brightness(1); }
+}
+
+@keyframes treasureReveal {
+  0% { transform: scale(0.45) rotate(-18deg); opacity: 0.2; text-shadow: 0 0 0 transparent; }
+  65% { transform: scale(1.2) rotate(8deg); opacity: 1; text-shadow: 0 0 18px #4aedd9; }
+  100% { transform: scale(1) rotate(0); text-shadow: 0 0 8px #4aedd9; }
+}
+
+@keyframes bookOpen {
+  from { transform: perspective(140px) rotateX(70deg) scale(0.8); opacity: 0.2; }
+  to { transform: perspective(140px) rotateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes gateOpen {
+  from { transform: scaleX(0.35); opacity: 0.3; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes goalsReveal {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes modalOut {
+  to { transform: translateY(8px) scale(0.98); opacity: 0; }
+}
+
+.animate-modal-out { animation: modalOut 180ms ease-in forwards; }
