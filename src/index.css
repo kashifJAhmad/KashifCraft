@@ -11,7 +11,9 @@
 html, body, #root {
   width: 100%;
   height: 100%;
+  min-height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -172,3 +174,114 @@ body {
 }
 
 .animate-modal-out { animation: modalOut 180ms ease-in forwards; }
+.animate-info-panel-in { animation: modalIn 180ms ease-out both; }
+
+@keyframes modalIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive game HUD and inventory */
+.game-hud {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+}
+
+.game-app {
+  --game-header-height: 56px;
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  isolation: isolate;
+}
+
+.game-world-viewport {
+  position: absolute;
+  inset: var(--game-header-height) 0 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.game-world-viewport canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+.game-hud-top { min-height: var(--game-header-height); gap: clamp(0.5rem, 1vw, 1rem); }
+.game-navigation { min-width: 0; max-width: 100%; }
+.game-navigation > div { max-width: 100%; }
+.game-instructions { flex: 0 1 26rem; }
+.game-hud-top > :last-child { flex: 0 0 auto; }
+.inventory-bar { max-width: calc(100vw - 1rem); }
+.inventory-hotbar { width: max-content; }
+.inventory-hotbar .mc-slot { flex: 0 0 auto; min-width: 44px; min-height: 44px; }
+.info-panel-backdrop { padding: max(0.5rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) max(0.5rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left)); }
+.info-panel-dialog { max-height: calc(100dvh - max(1rem, env(safe-area-inset-top) + env(safe-area-inset-bottom))); }
+.info-panel-content { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.info-panel-dialog > div:first-child,
+.info-panel-dialog > div:last-child { flex: 0 0 auto; }
+.info-panel-dialog > div:first-child { min-width: 0; }
+.info-panel-dialog h2 { overflow-wrap: anywhere; }
+.info-panel-dialog button[aria-label^="Close"] { min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+.portfolio-scroll { max-width: 100vw; }
+body { overflow-x: hidden; }
+
+.inventory-bar { width: max-content; max-width: 100%; }
+.inventory-hotbar { max-width: 100%; }
+.game-navigation-menu {
+  max-height: min(70dvh, 34rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.portfolio-nav { position: sticky; }
+.portfolio-mobile-navigation { display: none; }
+
+@media (max-width: 1535px) {
+  .game-navigation .mc-btn { font-size: 0.65rem; }
+  .portfolio-mobile-navigation { position: absolute; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.4rem; top: 100%; right: 0.5rem; width: min(32rem, calc(100vw - 1rem)); max-height: min(70dvh, 34rem); padding: 0.6rem; background: rgba(0,0,0,0.96); border: 2px solid #4b5563; box-shadow: 0 12px 28px rgba(0,0,0,.55); overflow-y: auto; }
+  .portfolio-mobile-navigation a { min-height: 44px; display: flex; align-items: center; padding: 0.6rem; border: 1px solid #374151; border-radius: 3px; color: #e5e7eb; font: 11px monospace; }
+}
+
+@media (min-width: 1280px) {
+  .game-app { --game-header-height: 104px; }
+  .game-hud-top { align-items: flex-start; }
+}
+
+@media (max-width: 767px) {
+  .game-hud { padding: max(0.5rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) max(0.5rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left)); }
+  .game-hud-top { align-items: flex-start; gap: 0.5rem; }
+  .game-hud-bottom { padding-bottom: 0.1rem; }
+  .inventory-bar > div:first-child { margin-bottom: 0.25rem; }
+  .inventory-bar > div:first-child p:last-child { font-size: 10px; line-height: 1.25; }
+  .inventory-selected-info { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 0.35rem; row-gap: 0.2rem; margin-bottom: 0.35rem; padding: 0.25rem 0.4rem; }
+  .inventory-selected-info span { margin-left: 0; font-size: 8px; line-height: 1.3; }
+  .inventory-hotbar { gap: 2px; padding: 3px; border-width: 3px; }
+  .inventory-hotbar .mc-slot { width: clamp(44px, 11vw, 48px); height: clamp(44px, 11vw, 48px); }
+  .inventory-hotbar .mc-slot > span[aria-hidden="true"] { font-size: 1.125rem; }
+  .portfolio-nav { flex-wrap: wrap; gap: 0.5rem; padding: 0.65rem max(0.75rem, env(safe-area-inset-left)); }
+  .portfolio-nav > div:first-child { min-width: 0; }
+  .portfolio-nav > div:first-child h1 { font-size: 10px; }
+  .portfolio-nav > div:last-of-type { gap: 0.4rem; }
+  .portfolio-nav .mc-btn { padding: 0.55rem 0.65rem; font-size: 8px; }
+  .portfolio-mobile-navigation { grid-template-columns: repeat(2, minmax(0, 1fr)); right: 0.5rem; left: 0.5rem; width: auto; gap: 0.35rem; padding: 0.55rem; max-height: min(65dvh, 28rem); }
+  .portfolio-mobile-navigation a { min-height: 44px; padding: 0.5rem; font-size: 10px; }
+  .portfolio-mobile-navigation a:hover, .portfolio-mobile-navigation a:focus-visible { color: #fde047; background: #1f2937; }
+  .portfolio-scroll { height: 100dvh; min-height: 100dvh; }
+}
+
+@media (max-width: 420px) {
+  .game-hud-top .game-navigation > div.xl\\:hidden { gap: 0.35rem; }
+  .game-hud-top .mc-btn { padding-left: 0.55rem; padding-right: 0.55rem; }
+  .inventory-bar > div:first-child p:first-child { font-size: 7px; }
+  .inventory-hotbar .mc-slot { width: 44px; height: 44px; }
+  .inventory-hotbar .mc-slot > span[aria-hidden="true"] { font-size: 1rem; }
+  .portfolio-nav .portfolio-menu-button { font-size: 7px; }
+  .portfolio-scroll > div.max-w-4xl { padding-left: 0.85rem; padding-right: 0.85rem; padding-top: 1.75rem; }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .inventory-bar > div:first-child { display: none; }
+  .inventory-instruction { display: none; }
+  .inventory-selected-info { margin-bottom: 0.2rem; padding-top: 0.15rem; padding-bottom: 0.15rem; }
+  .inventory-hotbar .mc-slot { width: 44px; height: 44px; }
+}

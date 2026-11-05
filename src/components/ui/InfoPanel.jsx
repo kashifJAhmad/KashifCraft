@@ -58,23 +58,25 @@ export default function InfoPanel() {
       case 'about':
         return (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 bg-gray-900/60 p-3 rounded border border-gray-700">
-              <div className="w-12 h-12 bg-mc-green rounded flex items-center justify-center text-2xl border-2 border-white">
-                👤
-              </div>
-              <div>
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 bg-gray-900/60 p-4 rounded border border-gray-700">
+              <img
+                src="/images/profile.jpg"
+                alt="Kashif Ahmad profile photograph"
+                loading="lazy"
+                className="h-24 w-24 sm:h-28 sm:w-28 shrink-0 rounded-xl border-[3px] border-mc-green object-cover object-center shadow-[0_0_18px_rgba(93,168,50,0.28)]"
+              />
+              <div className="min-w-0 flex-1 text-center sm:text-left">
                 <h3 className="font-pixel text-sm text-yellow-300">
                   {data.content.name}
                 </h3>
                 <p className="text-xs text-green-400 font-mono mt-0.5">
                   {data.content.role}
                 </p>
+                <p className="text-sm text-gray-200 leading-relaxed bg-black/40 p-3 mt-3 rounded border border-gray-800">
+                  {data.content.description}
+                </p>
               </div>
             </div>
-
-            <p className="text-sm text-gray-200 leading-relaxed bg-black/40 p-4 rounded border border-gray-800">
-              {data.content.description}
-            </p>
 
             <div>
               <h4 className="font-pixel text-xs text-yellow-300 mb-2">Key Highlights</h4>
@@ -118,7 +120,7 @@ export default function InfoPanel() {
 
       case 'projects':
         return (
-          <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
+          <div className="info-panel-projects space-y-3.5 pr-1">
             {data.items.map((proj, idx) => (
               <div
                 key={idx}
@@ -266,13 +268,13 @@ export default function InfoPanel() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 bg-black/70 backdrop-blur-sm pointer-events-auto select-none animate-fade-in">
+    <div className="info-panel-backdrop fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 bg-black/70 backdrop-blur-sm pointer-events-auto select-none animate-fade-in">
       {/* Modal Dialog */}
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="info-panel-title"
-        className={`relative w-full max-w-xl max-h-[calc(100dvh-2rem)] overflow-y-auto bg-[#2d2d2d] border-4 border-t-[#ffffff] border-l-[#ffffff] border-b-[#111111] border-r-[#111111] shadow-2xl p-4 sm:p-6 text-white ${isClosing ? 'animate-modal-out' : 'animate-bounce-in'}`}
+        className={`info-panel-dialog relative flex flex-col w-full max-w-xl max-h-[calc(100dvh-2rem)] min-h-0 overflow-hidden bg-[#2d2d2d] border-4 border-t-[#ffffff] border-l-[#ffffff] border-b-[#111111] border-r-[#111111] shadow-2xl p-4 sm:p-6 text-white ${isClosing ? 'animate-modal-out' : 'animate-info-panel-in'}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -294,7 +296,7 @@ export default function InfoPanel() {
         </div>
 
         {/* Dynamic Body Content */}
-        <div className="my-2 space-y-3">
+        <div className="info-panel-content my-2 min-h-0 flex-1 space-y-3">
           <p className="text-xs text-gray-400 leading-relaxed">{data.description}</p>
           {renderContent()}
         </div>

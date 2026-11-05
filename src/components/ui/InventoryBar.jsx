@@ -40,13 +40,12 @@ export default function InventoryBar() {
   const activeDef = BLOCK_TYPES[selectedBlock] || BLOCK_TYPES[0]
 
   return (
-    <div className="flex max-w-full flex-col items-center pointer-events-auto select-none" role="group" aria-label="Block inventory">
+    <div className="inventory-bar flex max-w-full flex-col items-center pointer-events-auto select-none" role="group" aria-label="Block inventory">
       <div className="mb-2 text-center">
         <p className="font-pixel text-[8px] sm:text-[9px] text-yellow-300">BUILD YOUR JOURNEY</p>
-        <p className="font-sans text-[11px] sm:text-xs text-white/90 mt-1">Select a block → Place it → Discover your story.</p>
       </div>
       {/* Selected Block Info / Tooltip Banner */}
-      <div className="mb-2 max-w-full bg-black/75 px-3 py-1 rounded text-center border border-gray-600 shadow-md" aria-live="polite">
+      <div className="inventory-selected-info mb-2 max-w-full bg-black/75 px-3 py-1 rounded text-center border border-gray-600 shadow-md" aria-live="polite">
         <span className="font-pixel text-[10px] text-yellow-300">
           [{selectedBlock + 1}] {activeDef.name} Block
         </span>
@@ -56,7 +55,7 @@ export default function InventoryBar() {
       </div>
 
       {/* Hotbar Container */}
-      <div className="flex items-center gap-0.5 sm:gap-1.5 p-1 bg-[#8b8b8b] border-4 border-t-[#ffffff] border-l-[#ffffff] border-b-[#373737] border-r-[#373737] shadow-2xl rounded-sm">
+      <div className="inventory-hotbar flex items-center gap-0.5 sm:gap-1.5 p-1 bg-[#8b8b8b] border-4 border-t-[#ffffff] border-l-[#ffffff] border-b-[#373737] border-r-[#373737] shadow-2xl rounded-sm">
         {BLOCK_TYPES.map((block, idx) => {
           const isSelected = selectedBlock === idx
           const isDiscovered = discoveredJourney[block.id]

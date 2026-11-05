@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import portfolioData from '../../data/portfolioData'
 import { soundManager } from '../../utils/sounds'
 
 export default function ProfessionalPortfolio({ onBackToGame }) {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const handleBack = () => {
     soundManager.play('open')
     onBackToGame()
@@ -11,7 +12,7 @@ export default function ProfessionalPortfolio({ onBackToGame }) {
   return (
     <div className="portfolio-scroll min-h-screen bg-[#14141e] text-white selection:bg-mc-green selection:text-black">
       {/* Top Sticky Navigation */}
-      <nav className="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b-2 border-gray-800 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <nav className="portfolio-nav sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b-2 border-gray-800 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded bg-mc-green flex items-center justify-center font-pixel text-xs text-black font-bold shadow-md">
             ⛏
@@ -27,7 +28,7 @@ export default function ProfessionalPortfolio({ onBackToGame }) {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">
-        <div className="hidden md:flex items-center gap-4 text-xs font-mono text-gray-300" aria-label="Portfolio sections">
+        <div className="hidden 2xl:flex items-center gap-4 text-xs font-mono text-gray-300" aria-label="Portfolio sections">
             <a href="#about" className="hover:text-yellow-300 transition-colors">
               About
             </a>
@@ -52,14 +53,36 @@ export default function ProfessionalPortfolio({ onBackToGame }) {
           </div>
 
           <button
+            type="button"
+            onClick={() => setMobileNavOpen((open) => !open)}
+            aria-expanded={mobileNavOpen}
+            aria-controls="portfolio-mobile-navigation"
+            aria-label={mobileNavOpen ? 'Close portfolio navigation' : 'Open portfolio navigation'}
+            className="portfolio-menu-button 2xl:hidden mc-btn bg-gray-800 hover:bg-gray-700 text-white font-pixel text-[9px] px-3 py-2 rounded"
+          >
+            {mobileNavOpen ? 'CLOSE' : 'SECTIONS'}
+          </button>
+
+          <button
             onClick={handleBack}
             aria-label="Return to the 3D world"
             className="mc-btn flex items-center gap-2 bg-mc-green hover:bg-green-600 text-black font-pixel text-xs px-3.5 py-2 rounded shadow-lg transition-transform hover:scale-105"
           >
             <span>🎮</span>
-            <span>3D World</span>
+            <span className="hidden sm:inline">3D World</span>
           </button>
         </div>
+        {mobileNavOpen && (
+          <div id="portfolio-mobile-navigation" className="portfolio-mobile-navigation 2xl:hidden">
+            {[
+              ['about', 'About'], ['skills', 'Skills'], ['projects', 'Projects'],
+              ['achievements', 'Achievements'], ['education', 'Education'],
+              ['contact', 'Contact'], ['goals', 'Goals'],
+            ].map(([id, label]) => (
+              <a key={id} href={`#${id}`} onClick={() => setMobileNavOpen(false)}>{label}</a>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* Main Container */}
@@ -111,9 +134,23 @@ export default function ProfessionalPortfolio({ onBackToGame }) {
           <p className="text-sm text-gray-300 leading-relaxed">{portfolioData.about.description}</p>
 
           <div className="bg-[#1c1c28] p-6 rounded-lg border border-gray-800 space-y-4 shadow-xl">
-            <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
-              {portfolioData.about.content.description}
-            </p>
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-5">
+              <img
+                src="/images/profile.jpg"
+                alt="Kashif Ahmad profile photograph"
+                loading="lazy"
+                className="h-28 w-28 sm:h-32 sm:w-32 shrink-0 rounded-xl border-[3px] border-mc-green object-cover object-center shadow-[0_0_20px_rgba(93,168,50,0.28)]"
+              />
+              <div className="min-w-0 flex-1 text-center md:text-left">
+                <h4 className="font-pixel text-sm text-yellow-300">{portfolioData.about.content.name}</h4>
+                <p className="text-xs sm:text-sm text-green-400 font-mono mt-2">
+                  {portfolioData.about.content.role}
+                </p>
+                <p className="text-sm sm:text-base text-gray-200 leading-relaxed mt-4">
+                  {portfolioData.about.content.description}
+                </p>
+              </div>
+            </div>
 
             <div className="pt-2">
               <h4 className="font-pixel text-xs text-yellow-300 mb-3">Key Focus Areas:</h4>

@@ -1,5 +1,5 @@
-import { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useEffect } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import Terrain from './Terrain'
 import Water from './Water'
@@ -17,6 +17,53 @@ function Loader() {
   )
 }
 
+function ResponsiveCamera() {
+  const { camera, size } = useThree()
+
+  useEffect(() => {
+    const aspect = size.width / Math.max(size.height, 1)
+    const target = [0, 2, 0]
+    const portrait = aspect < 0.65
+    const tablet = aspect < 0.95
+    const compact = aspect < 1.25
+    const fov = portrait ? 78 : tablet ? 70 : compact ? 62 : 54
+    const distance = portrait ? 37 : tablet ? 39 : compact ? 41 : 39
+    const horizontalFov = 2 * Math.atan(Math.tan((fov * Math.PI) / 360) * aspect)
+    const widthFit = 34 / Math.max(2 * Math.tan(horizontalFov / 2), 0.1)
+    const depthFit = 37 / Math.max(2 * Math.tan((fov * Math.PI) / 360), 0.1)
+    const fitDistance = Math.max(distance, Math.min(Math.max(widthFit, depthFit), distance + 8))
+
+    camera.fov = fov
+    camera.position.set(0, target[1] + fitDistance * 0.48, target[2] + fitDistance * 0.88)
+    camera.lookAt(target)
+    camera.updateProjectionMatrix()
+  }, [camera, size.width, size.height])
+
+  return null
+}
+
+function ResponsiveOrbitControls() {
+  const { size } = useThree()
+  const aspect = size.width / Math.max(size.height, 1)
+  const compact = aspect < 1.2
+
+  return (
+    <OrbitControls
+      makeDefault
+      enablePan
+      enableZoom
+      enableRotate
+      minDistance={compact ? 12 : 10}
+      maxDistance={compact ? 62 : 58}
+      maxPolarAngle={Math.PI / 2.15}
+      minPolarAngle={0.2}
+      target={[0, 1, 0]}
+      enableDamping
+      dampingFactor={0.08}
+    />
+  )
+}
+
 export default function GameWorld() {
   return (
     <Canvas
@@ -24,7 +71,7 @@ export default function GameWorld() {
       dpr={[1, 1.5]}
       camera={{ position: [0, 20, 30], fov: 55, near: 0.1, far: 250 }}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
       onCreated={({ gl }) => {
         gl.setClearColor('#87CEEB')
       }}
@@ -59,19 +106,8 @@ export default function GameWorld() {
         <BlockManager />
       </Suspense>
 
-      <OrbitControls
-        makeDefault
-        enablePan
-        enableZoom
-        enableRotate
-        minDistance={8}
-        maxDistance={65}
-        maxPolarAngle={Math.PI / 2.15}
-        minPolarAngle={0.2}
-        target={[0, 1, 0]}
-        enableDamping
-        dampingFactor={0.08}
-      />
+      <ResponsiveCamera />
+      <ResponsiveOrbitControls />
     </Canvas>
   )
 }

@@ -23,9 +23,9 @@ export default function HUD({ onTogglePortfolioView, isPortfolioView }) {
   const discoveredCount = Object.keys(discoveredJourney).length
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-3 sm:p-5 select-none overflow-hidden">
+    <div className="game-hud fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-3 sm:p-5 select-none overflow-hidden">
       {/* Top Header Bar */}
-      <div className="flex items-start justify-between w-full">
+      <div className="game-hud-top flex items-start justify-between w-full">
         {/* Navigation Menu (Top Left) */}
         <NavigationMenu
           onTogglePortfolioView={onTogglePortfolioView}
@@ -33,7 +33,7 @@ export default function HUD({ onTogglePortfolioView, isPortfolioView }) {
         />
 
         {/* Center Hint & Progress Banner */}
-        <div className="hidden md:flex flex-col items-center pointer-events-auto bg-black/75 px-4 py-2 rounded border border-gray-600 shadow-xl max-w-md text-center">
+        <div className="game-instructions hidden xl:flex flex-col items-center pointer-events-auto bg-black/75 px-4 py-2 rounded border border-gray-600 shadow-xl max-w-md text-center">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-yellow-400">🔨</span>
             <span className="font-pixel text-[9px] text-yellow-300">
@@ -93,7 +93,10 @@ export default function HUD({ onTogglePortfolioView, isPortfolioView }) {
       )}
 
       {/* Bottom Inventory Bar */}
-      <div className="w-full flex justify-center pb-1">
+      <div className="game-hud-bottom w-full flex flex-col items-center justify-center pb-1">
+        <p className="inventory-instruction pointer-events-none mb-1 rounded bg-black/65 px-2 py-1 text-center font-sans text-[11px] leading-tight text-white/90">
+          Select a block → Place it → Discover your story.
+        </p>
         <InventoryBar />
       </div>
     </div>

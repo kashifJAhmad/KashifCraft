@@ -30,17 +30,15 @@ export default function App() {
   }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#87CEEB]">
-      {/* 3D Canvas Game World */}
-      <GameWorld />
+    <div className="game-app relative w-full h-full overflow-hidden bg-[#87CEEB]">
+      <main className="game-world-viewport" aria-label="Interactive 3D portfolio world">
+        <GameWorld />
+      </main>
 
-      {/* 2D HUD & Hotbar Overlay */}
       <HUD
         onTogglePortfolioView={() => setIsPortfolioView(true)}
         isPortfolioView={isPortfolioView}
       />
-
-      {/* Info Modal Dialog */}
       <InfoPanel />
     </div>
   )
